@@ -1,0 +1,80 @@
+.preLoader {
+  width: 200%;
+  height: 100%;
+  padding: 2em;
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 0.5em;
+  overflow: hidden;
+  // z-index: 2;
+  z-index: 99;
+  background: #09090B;
+}
+
+.preLoader p {
+  width: max-content;
+  text-transform: uppercase;
+  // font-family: "Timmons NY";
+  font-size: 3.75rem;
+  line-height: 60px;
+  color: #fff;
+}
+
+.counter {
+  height: 100px;
+  display: flex;
+  // font-family: "Timmons NY";
+  font-size: 100px;
+  font-weight: 400;
+  line-height: 150px;
+  clip-path: polygon(0 0, 100% 0, 100% 100px, 0 100px);
+  color: #fff;
+}
+
+.digit1,
+.digit2,
+.digit3,
+.digit4 {
+  position: relative;
+  top: -15px;
+}
+
+.offset {
+  position: relative;
+  right: -7.5px;
+}
+
+.progressBar {
+  position: relative;
+  top: -15px;
+  width: 0%;
+  height: 4px;
+  // background: #000;
+  background: #fff;
+}
+
+
+@media (max-width: 900px) {
+  .preLoader {
+    padding: 1em;
+    gap: 0.5em;
+  }
+
+  .counter {
+    font-size: 3.3rem;
+  }
+
+  .preLoader p {
+    font-size: 1.8rem;
+    line-height: 64px;
+  }
+
+  .offset {
+    position: relative;
+    right: -5px;
+  }
+}
