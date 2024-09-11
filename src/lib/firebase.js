@@ -5,14 +5,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAfxbFnc02aos0fRT0bQQB8XCL6-UuN05Y",
-  authDomain: "reactweb-b9752.firebaseapp.com",
-  databaseURL: "https://reactweb-b9752-default-rtdb.firebaseio.com",
-  projectId: "reactweb-b9752",
-  storageBucket: "reactweb-b9752.appspot.com",
-  messagingSenderId: "393859501157",
-  appId: "1:393859501157:web:877f7447bf0528439f8a8c",
-  measurementId: "G-YVHKYD2P2Y"
+  apiKey: "AIzaSyDS8AOoDtgPdjDD_NO0jeP5gFDz3KkrEv8",
+  authDomain: "react-vite-32a9c.firebaseapp.com",
+  projectId: "react-vite-32a9c",
+  storageBucket: "react-vite-32a9c.appspot.com",
+  messagingSenderId: "758734288121",
+  appId: "1:758734288121:web:798a9f101eedbb41cc1e28",
+  measurementId: "G-3XTMWSZE5Q"
 };
 
 function createFirebaseApp(config) {

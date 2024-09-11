@@ -7,7 +7,7 @@ const NavBar = () => {
     <div className="nav">
       <div className="logo">
         <Link className="nav-link" to="/">
-          Codegrid
+          Anthony Buzzelli
         </Link>
       </div>
       <div className="nav-links">

@@ -10,22 +10,8 @@ const ContactFormContent = () => {
   const RECAPTCHA_VERIFY_URL = 'https://us-central1-reactweb-b9752.cloudfunctions.net/checkRecaptchaV11';
   
   const { executeRecaptcha } = useGoogleReCaptcha();
+  // eslint-disable-next-line no-unused-vars
   const [recaptchaVerified, setRecaptchaVerified] = useState(false)
-  // const handleRecaptchaVerify = (result) => {
-  //   if (result.score) {
-  //     console.log('recaptcha score', result.score)
-  //     if (result.score >= 0.5) {
-  //       setRecaptchaVerified(true);
-  //       console.log('recaptcha verified');
-  //     } else {
-  //       setRecaptchaVerified(false);
-  //       console.log('recaptcha score to low');
-  //     }
-  //   } else if (result.error) {
-  //     console.log('recaptcha error', result.error)
-  //     setRecaptchaVerified(false);
-  //   }
-  // };
   
   useEffect(() => {
     const script = document.querySelector('script[src^="https://www.gstatic.com/recaptcha/releases/"]');
