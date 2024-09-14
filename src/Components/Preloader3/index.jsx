@@ -1,7 +1,8 @@
 import styles from './style.module.scss';
-import React, { useRef, useEffect } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import PropTypes from 'prop-types';
 
 const PreLoader = ({ onComplete }) => {
   const preLoaderRef = useRef(null);
@@ -10,7 +11,8 @@ const PreLoader = ({ onComplete }) => {
   const digit3Ref = useRef(null);
   const progressBarRef = useRef(null);
 
-  useEffect(() => {
+  // useEffect(() => {
+    useLayoutEffect(() => {
     const createDigits = (digitRef, count, offset = false) => {
       if (digitRef.current) {
         digitRef.current.innerHTML = ''; // Clear existing content
@@ -94,6 +96,10 @@ const PreLoader = ({ onComplete }) => {
       <div className={styles.progressBar} ref={progressBarRef}></div>
     </div>
   );
+};
+
+PreLoader.propTypes = {
+  onComplete: PropTypes.func.isRequired,
 };
 
 export default PreLoader;
