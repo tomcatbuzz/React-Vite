@@ -20,7 +20,7 @@ const PreLoader = ({ onComplete }) => {
           const div = document.createElement("div");
           div.className = `${offset && i === 1 ? styles.offset : ''}`;
           div.textContent = i % 10;
-          console.log(digitRef.current, 'Digit ref')
+          // console.log(digitRef.current, 'Digit ref')
           digitRef.current.appendChild(div);
         }
       }
@@ -34,7 +34,7 @@ const PreLoader = ({ onComplete }) => {
   useGSAP(() => {
     const animate = (digit, duration, distance, delay = 0) => {
       if (digit.current && digit.current.children.length > 0) {
-        console.log(digit.current.children, 'Digit current')
+        // console.log(digit.current.children, 'Digit current')
         gsap.to(digit.current, {
           y: -distance,
           duration: duration,

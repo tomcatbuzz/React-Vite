@@ -6,20 +6,44 @@ import { getDatabase, ref, set, push } from 'firebase/database';
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import axios from "axios";
 
+const useLoadReCaptcha = (siteKey) => {
+  useEffect(() => {
+    const scriptId = 'recaptcha-script';
+    if (document.getElementById(scriptId)) return;
+
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => console.log('reCAPTCHA script loaded');
+    script.onerror = (error) => console.error('reCAPTCHA script error', error);
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [siteKey]);
+}
+
 const ContactFormContent = () => {
-  const RECAPTCHA_VERIFY_URL = 'https://us-central1-reactweb-b9752.cloudfunctions.net/checkRecaptcha';
+  const recaptchaKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
+  console.log(recaptchaKey, "key")
+  useLoadReCaptcha(recaptchaKey)
+  const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptcha';
   
   const { executeRecaptcha } = useGoogleReCaptcha();
   // eslint-disable-next-line no-unused-vars
   const [recaptchaVerified, setRecaptchaVerified] = useState(false)
   
-  useEffect(() => {
-    const script = document.querySelector('script[src^="https://www.gstatic.com/recaptcha/releases/"]');
-    if (script) {
-      script.onload = () => console.log('reCAPTCHA script loaded');
-      script.onerror = (error) => console.error('reCAPTCHA script error', error);
-    }
-  }, []);
+  
+  // useEffect(() => {
+  //   const script = document.querySelector('script[src^="https://www.gstatic.com/recaptcha/releases/"]');
+  //   if (script) {
+  //     script.onload = () => console.log('reCAPTCHA script loaded');
+  //     script.onerror = (error) => console.error('reCAPTCHA script error', error);
+  //   }
+  // }, []);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -61,7 +85,6 @@ const ContactFormContent = () => {
         const response = await axios({
           method: 'POST',
           url: RECAPTCHA_VERIFY_URL,
-          // data:  {token},
           data:  {token},
           headers: {
             'Content-Type': 'application/json',
@@ -179,6 +202,7 @@ const ContactFormContent = () => {
 };
 
 const Contact = () => {
+  
   return (
     <>
     {/* <div className="container">
@@ -194,7 +218,9 @@ const Contact = () => {
       <ContactFormContent />
     </GoogleReCaptchaProvider>
     </>
+    
   );
+  
 };
 
 const WrappedContact = transition(Contact);

@@ -5,23 +5,24 @@ const corsHandler = cors({origin: true});
 const USER_ERROR_CODES = ['missing-input-response', 'invalid-input-response'];
 const SECRET_KEY = process.env.SECRET_KEY;
 
-const allowedOrigins = ['http://localhost:5173, https://react-vite-32a9c.web.app'];
+// const allowedOrigins = ['http://localhost:5173, https://react-vite-32a9c.web.app'];
 
-export const checkRecaptcha = onRequest((req, res) => {
+export const checkRecaptchaV2 = onRequest((req, res) => {
   corsHandler(req, res, async () => {
+    // code block was used before, seems broken
     // const origin = req.headers.origin;
-    const origin: string = req.headers.origin || '';
-    if (origin && allowedOrigins.includes(origin)) {
-      res.set('Access-Control-Allow-Origin', origin);
-    } else {
-      res.set('Access-Control-Allow-Origin', '*');
-    }
+    // const origin: string = req.headers.origin || '';
+    // if (origin && allowedOrigins.includes(origin)) {
+    //   res.set('Access-Control-Allow-Origin', origin);
+    // } else {
+    //   res.set('Access-Control-Allow-Origin', '*');
+    // }
     // original url deployed
-    // res.set('Access-Control-Allow-Origin', 'https://reactweb-b9752.web.app');
-    // res.setHeader('Content-Type', 'application/json');
+    res.set('Access-Control-Allow-Origin', 'https://react-vite-32a9c.web.app');
+    res.setHeader('Content-Type', 'application/json');
     // suggested Claude
     // res.set('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'application/json');
+    // res.setHeader('Content-Type', 'application/json');
     // res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
     // res.set('Access-Control-Allow-Headers', 'Content-type');
     // if (req.method === 'OPTIONS') {
