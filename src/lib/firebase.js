@@ -26,9 +26,12 @@ function createFirebaseApp(config) {
 // const firebaseApp = initializeApp(firebaseConfig);
 export const firebaseApp = createFirebaseApp(firebaseConfig);
 
+// FOR TESTING ONLY
+self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+
 // initialize my App Check
 export const appCheck = initializeAppCheck(firebaseApp, {
-  provider: new ReCaptchaEnterpriseProvider('6LciukQqAAAAAKBLLD6Qy0mUYWMt7YQKRqQTs0qr'), 
+  provider: new ReCaptchaEnterpriseProvider(import.meta.env.VITE_ENTERPRISE_KEY), 
   isTokenAutoRefreshEnabled: true, 
 })
 
