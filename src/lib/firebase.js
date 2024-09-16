@@ -27,7 +27,7 @@ function createFirebaseApp(config) {
 export const firebaseApp = createFirebaseApp(firebaseConfig);
 
 // FOR TESTING ONLY
-self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+// self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 
 // initialize my App Check
 export const appCheck = initializeAppCheck(firebaseApp, {
