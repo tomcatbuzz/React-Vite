@@ -3,6 +3,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS8AOoDtgPdjDD_NO0jeP5gFDz3KkrEv8",
@@ -23,7 +24,13 @@ function createFirebaseApp(config) {
 }
 
 // const firebaseApp = initializeApp(firebaseConfig);
-const firebaseApp = createFirebaseApp(firebaseConfig);
+export const firebaseApp = createFirebaseApp(firebaseConfig);
+
+// initialize my App Check
+export const appCheck = initializeAppCheck(firebaseApp, {
+  provider: new ReCaptchaEnterpriseProvider('6LciukQqAAAAAKBLLD6Qy0mUYWMt7YQKRqQTs0qr'), 
+  isTokenAutoRefreshEnabled: true, 
+})
 
 // Database exports
 export const database = getDatabase(firebaseApp);
@@ -38,3 +45,5 @@ export const STATE_CHANGED = 'state_changed';
 // Analytics exports
 export const analytics = typeof window !== "undefined" ? getAnalytics(firebaseApp) : null;
 // export const analytics = getAnalytics(firebaseApp); 
+
+// export { appCheck };
