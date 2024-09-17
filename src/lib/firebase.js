@@ -1,5 +1,5 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, isSupported } from "firebase/analytics";
 import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
@@ -67,8 +67,8 @@ export const STATE_CHANGED = 'state_changed';
 // export const analytics = typeof window !== "undefined" ? getAnalytics(app) : null;
 
 export const initializeAnalytics = async () => {
-  // if (typeof window !== 'undefined' && await isSupported()) {
-    if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && await isSupported()) {
+    // if (typeof window !== 'undefined') {
     const analytics = getAnalytics(app);
     console.log('Analytics initialized successfully');
     return analytics;
