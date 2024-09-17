@@ -3,6 +3,7 @@ import styles from "../styles/contact.module.scss";
 
 import { useState, useCallback } from "react";
 import { getDatabase, ref, set, push } from 'firebase/database';
+import toast, { Toaster } from 'react-hot-toast';
 // import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 // import axios from "axios";
 
@@ -100,6 +101,7 @@ const ContactFormContent = () => {
             
             setFormData({ name: '', email: '', subject: '', message: '' });
             console.log('form submitted successfully')
+            toast.success('Your message was sent')
           } catch (error) {
             console.error('Error submitting form', error)
           }
@@ -120,64 +122,96 @@ const ContactFormContent = () => {
 
   return (
     <div className={styles.content}>
-    <h1>Contact Us</h1>
-    <form className={styles.form} onSubmit={handleSubmit}>
-    {/* <form className={styles.form}> */}
-      {/* Form fields remain the same */}
-      <div className={styles.formGroup}>
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          className={errors.name ? styles.inputError : ''}
-        />
-        {errors.name && <span className={styles.error}>{errors.name}</span>}
-      </div>
+      <h1>Contact Us</h1>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        {/* <form className={styles.form}> */}
+        {/* Form fields remain the same */}
+        <div className={styles.formGroup}>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className={errors.name ? styles.inputError : ""}
+          />
+          {errors.name && <span className={styles.error}>{errors.name}</span>}
+        </div>
 
-      <div className={styles.formGroup}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className={errors.email ? styles.inputError : ''}
-        />
-        {errors.email && <span className={styles.error}>{errors.email}</span>}
-      </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className={errors.email ? styles.inputError : ""}
+          />
+          {errors.email && <span className={styles.error}>{errors.email}</span>}
+        </div>
 
-      <div className={styles.formGroup}>
-        <label htmlFor="subject">Subject</label>
-        <input
-          type="text"
-          id="subject"
-          name="subject"
-          value={formData.subject}
-          onChange={handleChange}
-          className={errors.subject ? styles.inputError : ''}
-        />
-        {errors.subject && <span className={styles.error}>{errors.subject}</span>}
-      </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="subject">Subject</label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            value={formData.subject}
+            onChange={handleChange}
+            className={errors.subject ? styles.inputError : ""}
+          />
+          {errors.subject && (
+            <span className={styles.error}>{errors.subject}</span>
+          )}
+        </div>
 
-      <div className={styles.formGroup}>
-        <label htmlFor="message">Message</label>
-        <textarea
-          id="message"
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          className={errors.message ? styles.inputError : ''}
-        ></textarea>
-        {errors.message && <span className={styles.error}>{errors.message}</span>}
-      </div>
-      <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-        {isSubmitting ? 'Sending...' : 'Submit'}
-      </button>
-    </form>
+        <div className={styles.formGroup}>
+          <label htmlFor="message">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            className={errors.message ? styles.inputError : ""}
+          ></textarea>
+          {errors.message && (
+            <span className={styles.error}>{errors.message}</span>
+          )}
+        </div>
+        <button
+          type="submit"
+          className={styles.submitButton}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Sending..." : "Submit"}
+        </button>
+      </form>
+      <Toaster
+        position="top-center"
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          // Define default options
+          className: "",
+          duration: 5000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+
+          // Default options for specific types
+          success: {
+            duration: 3000,
+            theme: {
+              primary: "green",
+              secondary: "black",
+            },
+          },
+        }}
+      />
     </div>
   );
 };

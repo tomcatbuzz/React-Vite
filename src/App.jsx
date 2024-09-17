@@ -7,10 +7,28 @@ import NavBar from "./Components/NavBar";
 import Home from "./Components/Home";
 import About from "./Components/About";
 import Contact from "./Components/Contact";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { entCheck, initializeAnalytics } from './lib/firebase';
 // import transition from "./transition";
 
 function App() {
+  useEffect(() => {
+    
+    const analytics = initializeAnalytics();
+      if (analytics) {
+        console.log('Analytics initialized successfully in App component');
+      } else {
+        console.log('Analytics not initialized in App component');
+      }
+
+    const appCheck = entCheck();
+    if (appCheck) {
+      console.log('App Check initalialized successfully')
+    } else {
+      console.error('Failed to initialize')
+    }
+  }, []);
+
   const location = useLocation();
   const [isInitialLoad, setisInitialLoad] = useState(true);
   const [isLoading, setIsLoading] = useState(true)
