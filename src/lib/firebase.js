@@ -48,7 +48,8 @@ export const entCheck = () => {
     return null;
   }
   return initializeAppCheck(app, {
-    provider: new ReCaptchaEnterpriseProvider(import.meta.env.VITE_ENTERPRISE_KEY), 
+    // provider: new ReCaptchaEnterpriseProvider(import.meta.env.VITE_ENTERPRISE_KEY), 
+    provider: new ReCaptchaEnterpriseProvider(siteKey),
     isTokenAutoRefreshEnabled: true, 
   })
 }
