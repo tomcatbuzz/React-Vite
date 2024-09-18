@@ -1,4 +1,4 @@
-import "./App.css";
+// import "./App.css";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 // import Preloader from './Components/Preloader2/index';
