@@ -15,7 +15,10 @@ jobs:
         run: | 
           echo "@gsap:registry=https://npm.greensock.com" >> .npmrc 
           echo "//npm.greensock.com/:_authToken=${{ secrets.GREENSOCK_AUTH_TOKEN }}" >> .npmrc
+      - name: Create .env file
+      - run: echo "VITE_ENTERPRISE_KEY=${{ secrets.VITE_ENTERPRISE_KEY }}" >> .env.production
       - run: npm ci && npm run build
+      - env: VITE_ENTERPRISE_KEY: ${{ secrets.VITE_ENTERPRISE_KEY }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}

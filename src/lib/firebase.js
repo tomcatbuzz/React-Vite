@@ -43,8 +43,8 @@ console.log('Firebase Good', app)
 export const entCheck = () => {
   // const siteKey = import.meta.env.VITE_ENTERPRISE_KEY;
   // eslint-disable-next-line no-undef
-  // const siteKey = process.env.VITE_ENTERPRISE_KEY;
-  const siteKey = '6LciukQqAAAAAKBLLD6Qy0mUYWMt7YQKRqQTs0q';
+  const siteKey = process.env.VITE_ENTERPRISE_KEY;
+  // const siteKey = '6LciukQqAAAAAKBLLD6Qy0mUYWMt7YQKRqQTs0q';
   console.log('siteKey', siteKey)
   if (!siteKey) {
     console.error('Missing key')
