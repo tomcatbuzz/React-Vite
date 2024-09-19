@@ -18,11 +18,6 @@ jobs:
       - name: Create .env file
       - run: | 
           echo "VITE_ENTERPRISE_KEY=${{ secrets.VITE_ENTERPRISE_KEY }}" >> .env.production
-      - name: Debug Environment
-      - run: |
-          echo "VITE_ENTERPRISE_KEY is set: ${{ env.VITE_ENTERPRISE_KEY != '' }}"
-          echo "Contents of .env.production"
-          cat .env.production
       - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
