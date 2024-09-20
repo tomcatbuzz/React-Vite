@@ -3,7 +3,7 @@ import { getAnalytics, isSupported } from "firebase/analytics";
 import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
+// import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDS8AOoDtgPdjDD_NO0jeP5gFDz3KkrEv8",
@@ -40,22 +40,22 @@ console.log('Firebase Good', app)
 //   isTokenAutoRefreshEnabled: true, 
 // })
 
-export const entCheck = () => {
-  // const siteKey = import.meta.env.VITE_ENTERPRISE_KEY;
-  // eslint-disable-next-line no-undef
-  const siteKey = process.env.VITE_ENTERPRISE_KEY;
-  // const siteKey = '6LciukQqAAAAAKBLLD6Qy0mUYWMt7YQKRqQTs0q';
-  console.log('siteKey', siteKey)
-  if (!siteKey) {
-    console.error('Missing key')
-    return null;
-  }
-  return initializeAppCheck(app, {
-    // provider: new ReCaptchaEnterpriseProvider(import.meta.env.VITE_ENTERPRISE_KEY), 
-    provider: new ReCaptchaEnterpriseProvider(siteKey),
-    isTokenAutoRefreshEnabled: true, 
-  })
-}
+// export const entCheck = () => {
+//   // const siteKey = import.meta.env.VITE_ENTERPRISE_KEY;
+//   // eslint-disable-next-line no-undef
+//   const siteKey = process.env.VITE_ENTERPRISE_KEY;
+//   // const siteKey = '6LciukQqAAAAAKBLLD6Qy0mUYWMt7YQKRqQTs0q';
+//   console.log('siteKey', siteKey)
+//   if (!siteKey) {
+//     console.error('Missing key')
+//     return null;
+//   }
+//   return initializeAppCheck(app, {
+//     // provider: new ReCaptchaEnterpriseProvider(import.meta.env.VITE_ENTERPRISE_KEY), 
+//     provider: new ReCaptchaEnterpriseProvider(siteKey),
+//     isTokenAutoRefreshEnabled: true, 
+//   })
+// }
 
 // Database exports
 export const database = getDatabase(app);

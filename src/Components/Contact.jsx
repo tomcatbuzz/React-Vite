@@ -4,8 +4,8 @@ import styles from "../styles/contact.module.scss";
 import { useState, useCallback } from "react";
 import { getDatabase, ref, set, push } from 'firebase/database';
 import toast, { Toaster } from 'react-hot-toast';
-// import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-// import axios from "axios";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import axios from "axios";
 
 // const useLoadReCaptcha = (siteKey) => {
 //   useEffect(() => {
@@ -31,11 +31,11 @@ const ContactFormContent = () => {
   // const recaptchaKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
   // console.log(recaptchaKey, "key")
   // useLoadReCaptcha(recaptchaKey)
-  // const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptcha';
+  const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptcha';
   
-  // const { executeRecaptcha } = useGoogleReCaptcha();
-  // // eslint-disable-next-line no-unused-vars
-  // const [recaptchaVerified, setRecaptchaVerified] = useState(false)
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  // eslint-disable-next-line no-unused-vars
+  const [recaptchaVerified, setRecaptchaVerified] = useState(false)
   
   const [formData, setFormData] = useState({
     name: '',
@@ -71,25 +71,25 @@ const ContactFormContent = () => {
     if (validateForm()) {
       try {
         setIsSubmitting(true);
-        // const token = await executeRecaptcha()
-        // console.log('received token', token)
+        const token = await executeRecaptcha()
+        console.log('received token', token)
 
-        // const response = await axios({
-        //   method: 'POST',
-        //   url: RECAPTCHA_VERIFY_URL,
-        //   data:  {token},
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     // 'Access-Control-Allow-Origin': '*',
-        //   }
+        const response = await axios({
+          method: 'POST',
+          url: RECAPTCHA_VERIFY_URL,
+          data:  {token},
+          headers: {
+            'Content-Type': 'application/json',
+            // 'Access-Control-Allow-Origin': '*',
+          }
           
-        // });
-        // console.log('Response data:', response.data);
-        // const score = response.data.score;
-        // console.log(score, 'score')
-        // if (score >= 0.5) {
-        //   setRecaptchaVerified(true);
-        //   console.log('recaptcha verified');
+        });
+        console.log('Response data:', response.data);
+        const score = response.data.score;
+        console.log(score, 'score')
+        if (score >= 0.5) {
+          setRecaptchaVerified(true);
+          console.log('recaptcha verified');
           try {
             const db = getDatabase();
             const contactRef = ref(db, '/messages');
@@ -105,10 +105,10 @@ const ContactFormContent = () => {
           } catch (error) {
             console.error('Error submitting form', error)
           }
-        // } else {
-        //   setRecaptchaVerified(false);
-        //   console.log('recaptcha score to low');
-        // }
+        } else {
+          setRecaptchaVerified(false);
+          console.log('recaptcha score to low');
+        }
           
           
         } catch {
@@ -118,7 +118,7 @@ const ContactFormContent = () => {
           setIsSubmitting(false);
         }
     }
-  }, [validateForm, formData]);
+  }, [validateForm, executeRecaptcha, formData]);
 
   return (
     <div className={styles.content}>
@@ -223,15 +223,16 @@ const Contact = () => {
     {/* <div className="container">
       <h1>Contact</h1>
     </div> */}
-    {/* <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+    {/* <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} */}
+    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
         scriptProps={{
         async: true,
         defer: true,
         appendTo: "head",
         nonce: undefined,
-      }}> */}
+      }}>
       <ContactFormContent />
-    {/* </GoogleReCaptchaProvider> */}
+    </GoogleReCaptchaProvider>
     </>
     
   );

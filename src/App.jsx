@@ -8,7 +8,8 @@ import Home from "./Components/Home";
 import About from "./Components/About";
 import Contact from "./Components/Contact";
 import { useEffect, useState } from 'react';
-import { entCheck, initializeAnalytics } from './lib/firebase';
+// import { entCheck, initializeAnalytics } from './lib/firebase';
+import { initializeAnalytics } from './lib/firebase';
 // import transition from "./transition";
 
 function App() {
@@ -21,12 +22,12 @@ function App() {
         console.log('Analytics not initialized in App component');
       }
 
-    const appCheck = entCheck();
-    if (appCheck) {
-      console.log('App Check initalialized successfully')
-    } else {
-      console.error('Failed to initialize')
-    }
+    // const appCheck = entCheck();
+    // if (appCheck) {
+    //   console.log('App Check initalialized successfully')
+    // } else {
+    //   console.error('Failed to initialize')
+    // }
   }, []);
 
   const location = useLocation();

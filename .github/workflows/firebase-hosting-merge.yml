@@ -17,10 +17,10 @@ jobs:
           echo "//npm.greensock.com/:_authToken=${{ secrets.GREENSOCK_AUTH_TOKEN }}" >> .npmrc
       - name: Create .env file
         run: | 
-          echo "VITE_ENTERPRISE_KEY=${{ secrets.VITE_ENTERPRISE_KEY }}" >> .env.production
+          echo "VITE_RECAPTCHA_SITE_KEY=${{ secrets.VITE_RECAPTCHA_SITE_KEY }}" >> .env.production
       - name: Debug
         run: |
-          echo "VITE_ENTERPRISE_KEY is set: ${{ env.VITE_ENTERPRISE_KEY  != '' }}"
+          echo "VITE_RECAPTCHA_SITE_KEY is set: ${{ secrets.VITE_RECAPTCHA_SITE_KEY  != '' }}"
           echo "Contents of .env.production" 
           cat .env.production
       - run: npm ci && npm run build

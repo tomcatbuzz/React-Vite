@@ -24,7 +24,8 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
 
   console.log('Build mode:', mode)
-  console.log('VITE_ENTERPRISE_KEY:', env.VITE_ENTERPRISE_KEY)
+  // console.log('VITE_ENTERPRISE_KEY:', env.VITE_ENTERPRISE_KEY)
+  console.log('VITE_RECAPTCHA_SITE_KEY:', env.VITE_RECAPTCHA_SITE_KEY)
 
   return {
     esbuild: {
@@ -39,7 +40,8 @@ export default defineConfig(({ command, mode }) => {
     },
     plugins: [react(), glsl()],
     define: {
-      'process.env.VITE_ENTERPRISE_KEY': JSON.stringify(env.VITE_ENTERPRISE_KEY),
+      // 'process.env.VITE_ENTERPRISE_KEY': JSON.stringify(env.VITE_ENTERPRISE_KEY),
+      'process.env.VITE_RECAPTCHA_SITE_KEY': JSON.stringify(env.VITE_RECAPTCHA_SITE_KEY),
     },
   }
 })
