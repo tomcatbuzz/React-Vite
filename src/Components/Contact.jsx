@@ -1,36 +1,36 @@
 import transition from "../transition";
 import styles from "../styles/contact.module.scss";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { getDatabase, ref, set, push } from 'firebase/database';
 import toast, { Toaster } from 'react-hot-toast';
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import axios from "axios";
 
-// const useLoadReCaptcha = (siteKey) => {
-//   useEffect(() => {
-//     const scriptId = 'recaptcha-script';
-//     if (document.getElementById(scriptId)) return;
+const useLoadReCaptcha = (siteKey) => {
+  useEffect(() => {
+    const scriptId = 'recaptcha-script';
+    if (document.getElementById(scriptId)) return;
 
-//     const script = document.createElement('script');
-//     script.id = scriptId;
-//     script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
-//     script.async = true;
-//     script.defer = true;
-//     script.onload = () => console.log('reCAPTCHA script loaded');
-//     script.onerror = (error) => console.error('reCAPTCHA script error', error);
-//     document.head.appendChild(script);
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => console.log('reCAPTCHA script loaded');
+    script.onerror = (error) => console.error('reCAPTCHA script error', error);
+    document.head.appendChild(script);
 
-//     return () => {
-//       document.head.removeChild(script);
-//     };
-//   }, [siteKey]);
-// }
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [siteKey]);
+}
 
 const ContactFormContent = () => {
-  // const recaptchaKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
-  // console.log(recaptchaKey, "key")
-  // useLoadReCaptcha(recaptchaKey)
+  const recaptchaKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
+  console.log(recaptchaKey, "key")
+  useLoadReCaptcha(recaptchaKey)
   const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptcha';
   
   const { executeRecaptcha } = useGoogleReCaptcha();
