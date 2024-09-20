@@ -4,7 +4,7 @@ import styles from "../styles/contact.module.scss";
 import { useState, useCallback, useEffect } from "react";
 import { getDatabase, ref, set, push } from 'firebase/database';
 import toast, { Toaster } from 'react-hot-toast';
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+// import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import axios from "axios";
 
 const useLoadReCaptcha = (siteKey) => {
@@ -28,14 +28,16 @@ const useLoadReCaptcha = (siteKey) => {
 }
 
 const ContactFormContent = () => {
-  const recaptchaKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
-  console.log(recaptchaKey, "key")
-  useLoadReCaptcha(recaptchaKey)
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
+  console.log(siteKey, "key")
+  useLoadReCaptcha(siteKey)
   const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptcha';
   
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  // const { executeRecaptcha } = useGoogleReCaptcha();
   // eslint-disable-next-line no-unused-vars
   const [recaptchaVerified, setRecaptchaVerified] = useState(false)
+
+  const [token, setToken] = useState(null)
   
   const [formData, setFormData] = useState({
     name: '',
@@ -71,8 +73,16 @@ const ContactFormContent = () => {
     if (validateForm()) {
       try {
         setIsSubmitting(true);
-        const token = await executeRecaptcha()
-        console.log('received token', token)
+        // const token = await executeRecaptcha()
+        // console.log('received token', token)
+
+        window.grecaptcha.ready(() => {
+          window.grecaptcha.execute(siteKey, { action: 'submit' }).then((token) => {
+            setToken(token);
+            console.log('Token Generated', token)
+
+          })
+        })
 
         const response = await axios({
           method: 'POST',
@@ -118,7 +128,7 @@ const ContactFormContent = () => {
           setIsSubmitting(false);
         }
     }
-  }, [validateForm, executeRecaptcha, formData]);
+  }, [validateForm, token, siteKey, formData]);
 
   return (
     <div className={styles.content}>
@@ -224,15 +234,15 @@ const Contact = () => {
       <h1>Contact</h1>
     </div> */}
     {/* <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} */}
-    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+    {/* <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
         scriptProps={{
         async: true,
         defer: true,
         appendTo: "head",
         nonce: undefined,
-      }}>
+      }}> */}
       <ContactFormContent />
-    </GoogleReCaptchaProvider>
+    {/* </GoogleReCaptchaProvider> */}
     </>
     
   );
