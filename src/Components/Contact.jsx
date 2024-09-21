@@ -153,7 +153,7 @@ const ContactFormContent = () => {
           setIsSubmitting(false);
         }
     }
-  }, [validateForm, formData]);
+  }, [validateForm, executeRecaptcha, formData]);
 
   // if (scriptError) {
   //   return <div className={styles.error}>{scriptError}</div>
