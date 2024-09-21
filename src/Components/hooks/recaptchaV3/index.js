@@ -14,6 +14,7 @@ const useRecaptchaV3 = (siteKey) => {
         script.onload = () => {
           setIsRecaptchaReady(true)
         };
+        console.log('script', script)
     }
   }, [siteKey]);
 
