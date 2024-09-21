@@ -8,37 +8,49 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from "axios";
 
 const useLoadReCaptcha = (siteKey) => {
+  const [scriptLoaded, setScriptLoaded] = useState(false)
+  const [scriptError, setScriptError] = useState(null)
   useEffect(() => {
     const scriptId = 'recaptcha-script';
-    if (document.getElementById(scriptId)) return;
-
+    if (document.getElementById(scriptId)) {
+      setScriptLoaded(true)
+      return;
+    }
     const script = document.createElement('script');
     script.id = scriptId;
     script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
     script.async = true;
     script.defer = true;
-    script.onload = () => console.log('reCAPTCHA script loaded');
-    script.onerror = (error) => console.error('reCAPTCHA script error', error);
+    script.onload = () => {
+      console.log('reCAPTCHA script loaded');
+      setScriptLoaded(true);
+    }
+    script.onerror = (error) => {
+      console.error('reCAPTCHA script error', error);
+      setScriptError('failed to load recaptcha, check your connection');
+    }
     document.head.appendChild(script);
 
     return () => {
-      document.head.removeChild(script);
+      const scriptElement = document.getElementById(scriptId);
+      if (scriptElement) document.head.removeChild(script);
     };
   }, [siteKey]);
+
+  return { scriptLoaded, scriptError };
 }
 
 const ContactFormContent = () => {
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
   console.log(siteKey, "key")
-  useLoadReCaptcha(siteKey)
+  const { scriptLoaded, scriptError } = useLoadReCaptcha(siteKey)
   const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptcha';
   
   // const { executeRecaptcha } = useGoogleReCaptcha();
   // eslint-disable-next-line no-unused-vars
   const [recaptchaVerified, setRecaptchaVerified] = useState(false)
 
-  const [token, setToken] = useState(null)
-  
+    
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -75,24 +87,34 @@ const ContactFormContent = () => {
         setIsSubmitting(true);
         // const token = await executeRecaptcha()
         // console.log('received token', token)
+        if (!window.grecaptcha) {
+          throw new Error('recaptcha not loaded')
+        }
 
-        window.grecaptcha.ready(() => {
-          window.grecaptcha.execute(siteKey, { action: 'submit' }).then((token) => {
-            setToken(token);
-            console.log('Token Generated', token)
+        const token = await new Promise((resolve, reject) => {
+          window.grecaptcha.ready(() => {
+            window.grecaptcha.execute(siteKey, { action: 'submit' })
+            .then(resolve)
+            .catch(reject)
+          });
+        });
+        console.log('Token Generated', token);
+        // window.grecaptcha.ready(() => {
+        //   window.grecaptcha.execute(siteKey, { action: 'submit' }).then((token) => {
+        //     setToken(token);
+        //     console.log('Token Generated', token)
 
-          })
-        })
+        //   })
+        // })
 
         const response = await axios({
           method: 'POST',
           url: RECAPTCHA_VERIFY_URL,
-          data:  {token},
+          data:  { token },
           headers: {
             'Content-Type': 'application/json',
             // 'Access-Control-Allow-Origin': '*',
           }
-          
         });
         console.log('Response data:', response.data);
         const score = response.data.score;
@@ -128,7 +150,15 @@ const ContactFormContent = () => {
           setIsSubmitting(false);
         }
     }
-  }, [validateForm, token, siteKey, formData]);
+  }, [validateForm, siteKey, formData]);
+
+  if (scriptError) {
+    return <div className={styles.error}>{scriptError}</div>
+  }
+
+  if (!scriptLoaded) {
+    return <div className={styles.loading}>Loading reCAPTCHA...</div>
+  }
 
   return (
     <div className={styles.content}>
