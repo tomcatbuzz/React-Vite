@@ -20,7 +20,7 @@ const useLoadReCaptcha = (siteKey) => {
     script.id = scriptId;
     script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
     script.async = true;
-    script.defer = true;
+    // script.defer = true;
     script.onload = () => {
       console.log('reCAPTCHA script loaded');
       setScriptLoaded(true);

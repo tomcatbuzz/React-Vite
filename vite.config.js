@@ -41,7 +41,7 @@ export default defineConfig(({ command, mode }) => {
     plugins: [react(), glsl()],
     define: {
       // 'process.env.VITE_ENTERPRISE_KEY': JSON.stringify(env.VITE_ENTERPRISE_KEY),
-      'process.env.VITE_RECAPTCHA_SITE_KEY': JSON.stringify(env.VITE_RECAPTCHA_SITE_KEY),
+      'import.meta.env.VITE_RECAPTCHA_SITE_KEY': JSON.stringify(process.env.VITE_RECAPTCHA_SITE_KEY),
     },
   }
 })
