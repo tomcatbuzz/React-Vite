@@ -12,7 +12,6 @@
         "destination": "/index.html"
       }
     ],
-    "source": "**",
     "headers": [
       {
         "key": "Content-Security-Policy",
