@@ -4,4 +4,4 @@ import {initializeApp} from 'firebase-admin/app';
 initializeApp();
 
 export {sendContactMessage} from './sendgrid';
-export {checkRecaptchaV2} from './recaptcha';
+export {checkRecaptchaV3} from './recaptcha';

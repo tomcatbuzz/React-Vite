@@ -46,7 +46,7 @@ const ContactFormContent = () => {
   // console.log(siteKey, "key")
   // const { scriptLoaded, scriptError } = useLoadReCaptcha(siteKey)
 
-  const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptcha';
+  const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptchaV3';
   const executeRecaptcha = useRecaptchaV3('6LdREEQqAAAAALl4GpPbtiJkuFoRoLyWV3RCCAzr')
   
   // const { executeRecaptcha } = useGoogleReCaptcha();
