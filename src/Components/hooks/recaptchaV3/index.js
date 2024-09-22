@@ -8,7 +8,8 @@ const useRecaptchaV3 = (siteKey) => {
       setIsRecaptchaReady(true)
     } else {
         const script = document.createElement('script');
-        script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+        // script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+        script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${siteKey}`;
         script.async = true;
         document.head.appendChild(script);
         script.onload = () => {

@@ -8,38 +8,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from "axios";
 import useRecaptchaV3 from './hooks/recaptchaV3';
 
-// const useLoadReCaptcha = (siteKey) => {
-//   const [scriptLoaded, setScriptLoaded] = useState(false)
-//   const [scriptError, setScriptError] = useState(null)
-//   useEffect(() => {
-//     const scriptId = 'recaptcha-script';
-//     if (document.getElementById(scriptId)) {
-//       setScriptLoaded(true)
-//       return;
-//     }
-//     const script = document.createElement('script');
-//     script.id = scriptId;
-//     script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
-//     script.async = true;
-//     // script.defer = true;
-//     script.onload = () => {
-//       console.log('reCAPTCHA script loaded');
-//       setScriptLoaded(true);
-//     }
-//     script.onerror = (error) => {
-//       console.error('reCAPTCHA script error', error);
-//       setScriptError('failed to load recaptcha, check your connection');
-//     }
-//     document.head.appendChild(script);
-
-//     return () => {
-//       const scriptElement = document.getElementById(scriptId);
-//       if (scriptElement) document.head.removeChild(script);
-//     };
-//   }, [siteKey]);
-
-//   return { scriptLoaded, scriptError };
-// }
 
 const ContactFormContent = () => {
   // const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
@@ -109,7 +77,8 @@ const ContactFormContent = () => {
 
         //   })
         // })
-        const token = await executeRecaptcha('submit')
+        const token = await executeRecaptcha('submit') 
+        console.log
         const response = await axios({
           method: 'POST',
           url: RECAPTCHA_VERIFY_URL,
