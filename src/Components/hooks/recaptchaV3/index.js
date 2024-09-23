@@ -11,6 +11,7 @@ const useRecaptchaV3 = (siteKey) => {
         // script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
         script.src = `https://www.recaptcha.net/recaptcha/api.js?render=${siteKey}`;
         script.async = true;
+        script.defer = true;
         document.head.appendChild(script);
         script.onload = () => {
           setIsRecaptchaReady(true)
