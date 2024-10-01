@@ -56,13 +56,6 @@ function App() {
     document.body.style.cursor = 'default'
     window.scrollTo(0,0);
   };
-  
-  
-
-  // if (isLoading) {
-  //   return <Preloader />
-  // }
-
 
   return (
     <>
