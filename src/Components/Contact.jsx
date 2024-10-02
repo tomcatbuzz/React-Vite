@@ -15,7 +15,7 @@ const ContactFormContent = () => {
   // const { scriptLoaded, scriptError } = useLoadReCaptcha(siteKey)
 
   const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptchaV3';
-  const executeRecaptcha = useRecaptchaV3('6LdREEQqAAAAALl4GpPbtiJkuFoRoLyWV3RCCAzr')
+  const executeRecaptcha = useRecaptchaV3('6LdREEQqAAAAALl4GpPbtiJkuFoRoLyWV3RCCAzr', 'submit')
   
   // const { executeRecaptcha } = useGoogleReCaptcha();
   // eslint-disable-next-line no-unused-vars
