@@ -33,7 +33,7 @@ const useRecaptchaV3 = (siteKey) => {
           console.error('Error loading reCAPTCHA script');
         };
 
-        document.head.appendChild(script);
+        document.body.appendChild(script);
       }
     }
 
@@ -41,7 +41,7 @@ const useRecaptchaV3 = (siteKey) => {
     return () => {
       const script = document.getElementById(scriptId);
       if (script) {
-        document.head.removeChild(script);
+        document.body.removeChild(script);
       }
     };
   }, [siteKey]);
