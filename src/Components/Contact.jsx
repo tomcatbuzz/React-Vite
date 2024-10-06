@@ -6,7 +6,8 @@ import { getDatabase, ref, set, push } from 'firebase/database';
 import toast, { Toaster } from 'react-hot-toast';
 // import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import axios from "axios";
-import useRecaptchaV3 from './hooks/recaptchaV3';
+// import useRecaptchaV3 from './hooks/recaptchaV3';
+import Recaptcha from './hooks/recaptchaV2/index';
 
 
 const ContactFormContent = () => {
@@ -14,8 +15,9 @@ const ContactFormContent = () => {
   // console.log(siteKey, "key")
   // const { scriptLoaded, scriptError } = useLoadReCaptcha(siteKey)
 
-  const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptchaV3';
-  const executeRecaptcha = useRecaptchaV3('6LdREEQqAAAAALl4GpPbtiJkuFoRoLyWV3RCCAzr', 'submit')
+  // const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/checkRecaptchaV3';
+  const RECAPTCHA_VERIFY_URL = 'https://us-central1-react-vite-32a9c.cloudfunctions.net/recaptchaCheckbox'
+  // const executeRecaptcha = useRecaptchaV3('6LdREEQqAAAAALl4GpPbtiJkuFoRoLyWV3RCCAzr', 'submit')
   
   // const { executeRecaptcha } = useGoogleReCaptcha();
   // eslint-disable-next-line no-unused-vars
@@ -30,6 +32,7 @@ const ContactFormContent = () => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState(''); 
 
   const validateForm = useCallback(() => {
     let errors = {};
@@ -53,45 +56,29 @@ const ContactFormContent = () => {
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (validateForm() && recaptchaToken) {
       try {
         setIsSubmitting(true);
-        // const token = await executeRecaptcha()
-        // console.log('received token', token)
-        // if (!window.grecaptcha) {
-        //   throw new Error('recaptcha not loaded')
-        // }
-
-        // const token = await new Promise((resolve, reject) => {
-        //   window.grecaptcha.ready(() => {
-        //     window.grecaptcha.execute(siteKey, { action: 'submit' })
-        //     .then(resolve)
-        //     .catch(reject)
-        //   });
+        // const token = await executeRecaptcha('submit') 
+        
+        // const response = await axios({
+        //   method: 'POST',
+        //   url: RECAPTCHA_VERIFY_URL,
+        //   data:  { token },
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     // 'Access-Control-Allow-Origin': '*',
+        //   }
         // });
-        // console.log('Token Generated', token);
-        // window.grecaptcha.ready(() => {
-        //   window.grecaptcha.execute(siteKey, { action: 'submit' }).then((token) => {
-        //     setToken(token);
-        //     console.log('Token Generated', token)
-
-        //   })
-        // })
-        const token = await executeRecaptcha('submit') 
-        console.log
-        const response = await axios({
-          method: 'POST',
-          url: RECAPTCHA_VERIFY_URL,
-          data:  { token },
-          headers: {
-            'Content-Type': 'application/json',
-            // 'Access-Control-Allow-Origin': '*',
-          }
-        });
-        console.log('Response data:', response.data);
-        const score = response.data.score;
-        console.log(score, 'score')
-        if (score >= 0.5) {
+        const response = await axios.post(RECAPTCHA_VERIFY_URL, {token: recaptchaToken})
+        const { success } = response.data;
+        // console.log('Response data:', response.data);
+        // const score = response.data.score;
+        // console.log(score, 'score')
+        // if (score >= 0.5) {
+          console.log('Response data:', response);
+          
+          if (success) {
           setRecaptchaVerified(true);
           console.log('recaptcha verified');
           try {
@@ -108,21 +95,27 @@ const ContactFormContent = () => {
             toast.success('Your message was sent')
           } catch (error) {
             console.error('Error submitting form', error)
+            toast.error('Error submitting form, please try again')
           }
         } else {
           setRecaptchaVerified(false);
-          console.log('recaptcha score to low');
+          console.log('recaptcha verification failed');
+          toast.error('reCaptcha verification failed, please try again')
         }
-          
-          
         } catch {
           console.error('Error submitting form')
-        //   // alert('An error occured')
+        toast.error('Error submitting form, please try again')
         } finally {
           setIsSubmitting(false);
         }
+    } else if (!recaptchaToken) {
+      toast.error('Please verify reCAPTCHA')
     }
-  }, [validateForm, executeRecaptcha, formData]);
+  }, [validateForm, recaptchaToken, formData]);
+
+  const handleToken = (token) => {
+    setRecaptchaToken(token); // Capture reCAPTCHA v2 token
+  };
 
   // if (scriptError) {
   //   return <div className={styles.error}>{scriptError}</div>
@@ -192,10 +185,11 @@ const ContactFormContent = () => {
             <span className={styles.error}>{errors.message}</span>
           )}
         </div>
+        <Recaptcha siteKey="6LfsT1cqAAAAAInbefxEMYDGbSSNgLmYxJOLIsyj" callback={handleToken} />
         <button
           type="submit"
           className={styles.submitButton}
-          disabled={isSubmitting}
+          disabled={isSubmitting  || !recaptchaToken}
         >
           {isSubmitting ? "Sending..." : "Submit"}
         </button>
@@ -244,6 +238,7 @@ const Contact = () => {
         nonce: undefined,
       }}> */}
       <ContactFormContent />
+      
     {/* </GoogleReCaptchaProvider> */}
     </>
     
