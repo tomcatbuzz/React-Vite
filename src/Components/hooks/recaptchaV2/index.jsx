@@ -22,7 +22,7 @@ const ReCaptcha = ({ siteKey, callback }) => {
             script.src = "https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit";
             script.async = true;
             script.defer = true;
-            document.head.appendChild(script);
+            document.body.appendChild(script);
         } else if (window.grecaptcha && window.grecaptcha.render) {
             // If reCAPTCHA is already loaded, call the function directly
             onRecaptchaLoad();
@@ -30,6 +30,7 @@ const ReCaptcha = ({ siteKey, callback }) => {
 
         // Clean up the global callback on component unmount
         return () => {
+            
             window.onRecaptchaLoad = null;
             if (isRendered.current) {
                 window.grecaptcha.reset(); // Reset the reCAPTCHA widget
@@ -53,7 +54,7 @@ const ReCaptcha = ({ siteKey, callback }) => {
             
         }
     
-    }, [callback, isRecaptchaLoaded,  siteKey]);
+    }, [callback, isRecaptchaLoaded, siteKey]);
 
     return (
         <div ref={recaptchaRef}></div>

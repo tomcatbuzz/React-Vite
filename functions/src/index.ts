@@ -6,3 +6,5 @@ initializeApp();
 export {sendContactMessage} from './sendgrid';
 export {checkRecaptchaV3} from './recaptcha';
 export {recaptchaCheckbox} from './recaptchaV2';
+export {verifyAltcha} from './altcha';
+export {handleAltcha} from './challenge';
