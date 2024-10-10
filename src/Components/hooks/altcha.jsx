@@ -27,7 +27,7 @@ const useAltcha = (onStateChange) => {
         '--altcha-max-width': '100%',
       }}
       // challengeurl="https://us-central1-react-vite-32a9c.cloudfunctions.net/verifyAltcha"
-      challengeurl="https://us-central1-react-vite-32a9c.cloudfunctions.net/handleAltcha"
+      challengeurl="https://us-central1-react-vite-32a9c.cloudfunctions.net/handleAltchaV2"
     ></altcha-widget>
   );
 

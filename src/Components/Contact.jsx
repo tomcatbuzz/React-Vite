@@ -22,7 +22,7 @@ const ContactFormContent = () => {
   
   // const { executeRecaptcha } = useGoogleReCaptcha();
   // eslint-disable-next-line no-unused-vars
-  const [recaptchaVerified, setRecaptchaVerified] = useState(false)
+  // const [recaptchaVerified, setRecaptchaVerified] = useState(false)
 
   // ALTCHA
   const { value: altchaValue, AltchaWidget } = useAltcha();
@@ -64,6 +64,7 @@ const ContactFormContent = () => {
       if (validateForm()) {
         if (!altchaValue) {
           toast.error('Please complete the challenge');
+          console.log(altchaValue, "altchaValue???/")
           return;
         }
       try {
@@ -86,10 +87,20 @@ const ContactFormContent = () => {
         // console.log(score, 'score')
         // if (score >= 0.5) {
           // console.log('Response data:', response);
+
+          // Verify ALTCHA solution
+        const verificationResponse = await fetch('https://us-central1-react-vite-32a9c.cloudfunctions.net/handleAltchaV2', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ payload: altchaValue }),
+        });
+        const verificationResult = await verificationResponse.json();
           
-          // if (success) {
+          if (verificationResult.success) {
           // setRecaptchaVerified(true);
-          // console.log('recaptcha verified');
+          console.log(verificationResult, "VERIFIED???");
           // try {
             const db = getDatabase();
             const contactRef = ref(db, '/messages');
@@ -106,11 +117,11 @@ const ContactFormContent = () => {
           //   console.error('Error submitting form', error)
           //   toast.error('Error submitting form, please try again')
           // }
-        // } else {
+        } else {
         //   setRecaptchaVerified(false);
-        //   console.log('recaptcha verification failed');
-        //   toast.error('reCaptcha verification failed, please try again')
-        // }
+          console.log('Altcha verification failed');
+          toast.error('Altcha verification failed, please try again')
+        }
         } catch {
           console.error('Error submitting form')
         toast.error('Error submitting form, please try again')

@@ -1,13 +1,15 @@
 import {onRequest} from 'firebase-functions/v2/https';
 import * as cors from 'cors';
 import {createChallenge, verifySolution} from 'altcha-lib';
+import {webcrypto} from 'crypto';
+globalThis.crypto = webcrypto as unknown as Crypto;
 
 const corsHandler = cors({origin: true});
 
 const allowedOrigins = ['http://localhost:5173', 'https://react-vite-32a9c.web.app'];
 const hmacKey = process.env.ALTCHA_HMAC_KEY;
 
-export const handleAltcha = onRequest((req, res) => {
+export const handleAltchaV2 = onRequest((req, res) => {
   corsHandler(req, res, async () => {
     const origin = req.headers.origin || '';
     if (origin && allowedOrigins.includes(origin)) {
