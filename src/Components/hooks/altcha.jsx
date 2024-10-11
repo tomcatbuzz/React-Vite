@@ -8,6 +8,7 @@ const useAltcha = (onStateChange) => {
   useEffect(() => {
     const handleStateChange = (ev) => {
       if ('detail' in ev) {
+        console.log('statechange', ev.detail);
         setValue(ev.detail.payload || null);
         if (onStateChange) onStateChange(ev);
       }
@@ -28,6 +29,7 @@ const useAltcha = (onStateChange) => {
       }}
       // challengeurl="https://us-central1-react-vite-32a9c.cloudfunctions.net/verifyAltcha"
       challengeurl="https://us-central1-react-vite-32a9c.cloudfunctions.net/handleAltchaV2"
+      debug
     ></altcha-widget>
   );
 

@@ -1,7 +1,7 @@
 import transition from "../transition";
 import styles from "../styles/contact.module.scss";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { getDatabase, ref, set, push } from 'firebase/database';
 import toast, { Toaster } from 'react-hot-toast';
 // import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -26,6 +26,10 @@ const ContactFormContent = () => {
 
   // ALTCHA
   const { value: altchaValue, AltchaWidget } = useAltcha();
+
+  useEffect(() => {
+    console.log(altchaValue, "altchaValue???/")
+  }, [altchaValue])
 
     
   const [formData, setFormData] = useState({
@@ -61,10 +65,10 @@ const ContactFormContent = () => {
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     // if (validateForm() && recaptchaToken) {
-      if (validateForm()) {
+      if (validateForm() && altchaValue) {
         if (!altchaValue) {
           toast.error('Please complete the challenge');
-          console.log(altchaValue, "altchaValue???/")
+          console.log(altchaValue, "Value at Submit")
           return;
         }
       try {
