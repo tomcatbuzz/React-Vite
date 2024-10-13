@@ -1,14 +1,15 @@
 import transition from "../transition";
 import styles from "../styles/contact.module.scss";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { getDatabase, ref, set, push } from 'firebase/database';
 import toast, { Toaster } from 'react-hot-toast';
 // import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 // import axios from "axios";
 // import useRecaptchaV3 from './hooks/recaptchaV3';
 // import Recaptcha from './hooks/recaptchaV2/index';
-import useAltcha from './hooks/altcha'
+// import useAltcha from './hooks/altcha'
+import Altcha from './hooks/altcha2'
 
 
 const ContactFormContent = () => {
@@ -25,11 +26,17 @@ const ContactFormContent = () => {
   // const [recaptchaVerified, setRecaptchaVerified] = useState(false)
 
   // ALTCHA
-  const { value: altchaValue, AltchaWidget } = useAltcha();
+  // const { value: altchaValue, AltchaWidget } = useAltcha();
+  const altchaRef = useRef(null)
+  const [altchaState, setAltchaState] = useState('idle')
+
+  const handleAltchaStateChange = (ev) => {
+    setAltchaState(ev.detail.state)
+  }
 
   useEffect(() => {
-    console.log(altchaValue, "altchaValue???/")
-  }, [altchaValue])
+    console.log(altchaRef, "altchaValue???")
+  }, [altchaRef])
 
     
   const [formData, setFormData] = useState({
@@ -65,12 +72,13 @@ const ContactFormContent = () => {
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     // if (validateForm() && recaptchaToken) {
-      if (validateForm() && altchaValue) {
-        if (!altchaValue) {
-          toast.error('Please complete the challenge');
-          console.log(altchaValue, "Value at Submit")
-          return;
-        }
+      if (validateForm() && altchaState === 'verified') {
+      // if (validateForm() && altchaValue) {
+        // if (!altchaValue) {
+        //   toast.error('Please complete the challenge');
+        //   console.log(altchaValue, "Value at Submit")
+        //   return;
+        // }
       try {
         setIsSubmitting(true);
         // const token = await executeRecaptcha('submit') 
@@ -93,18 +101,18 @@ const ContactFormContent = () => {
           // console.log('Response data:', response);
 
           // Verify ALTCHA solution
-        const verificationResponse = await fetch('https://us-central1-react-vite-32a9c.cloudfunctions.net/handleAltchaV2', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ payload: altchaValue }),
-        });
-        const verificationResult = await verificationResponse.json();
+        // const verificationResponse = await fetch('https://us-central1-react-vite-32a9c.cloudfunctions.net/handleAltchaV2', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({ payload: altchaValue }),
+        // });
+        // const verificationResult = await verificationResponse.json();
           
-          if (verificationResult.success) {
+        //   if (verificationResult.success) {
           // setRecaptchaVerified(true);
-          console.log(verificationResult, "VERIFIED???");
+          // console.log(verificationResult, "VERIFIED???");
           // try {
             const db = getDatabase();
             const contactRef = ref(db, '/messages');
@@ -117,16 +125,11 @@ const ContactFormContent = () => {
             setFormData({ name: '', email: '', subject: '', message: '' });
             console.log('form submitted successfully')
             toast.success('Your message was sent')
-          // } catch (error) {
-          //   console.error('Error submitting form', error)
-          //   toast.error('Error submitting form, please try again')
-          // }
-        } else {
-        //   setRecaptchaVerified(false);
-          console.log('Altcha verification failed');
-          toast.error('Altcha verification failed, please try again')
+        // } else {
+        //   console.log('Altcha verification failed');
+        //   toast.error('Altcha verification failed, please try again')
         }
-        } catch {
+        catch {
           console.error('Error submitting form')
         toast.error('Error submitting form, please try again')
         } finally {
@@ -136,7 +139,7 @@ const ContactFormContent = () => {
     // } else if (!recaptchaToken) {
     //   toast.error('Please verify reCAPTCHA')
     // }
-  }, [validateForm, altchaValue, formData]);
+  }, [validateForm, altchaState, formData]);
 
   // const handleToken = (token) => {
   //   setRecaptchaToken(token); // Capture reCAPTCHA v2 token
@@ -211,11 +214,15 @@ const ContactFormContent = () => {
           )}
         </div>
         {/* <Recaptcha siteKey="6LfsT1cqAAAAAInbefxEMYDGbSSNgLmYxJOLIsyj" callback={handleToken} /> */}
-        <AltchaWidget />
+        <Altcha 
+          ref={altchaRef}
+          onStateChange={handleAltchaStateChange}
+        />
         <button
           type="submit"
           className={styles.submitButton}
-          disabled={isSubmitting  || !altchaValue}
+          // disabled={isSubmitting  || !altchaValue}
+          disabled={isSubmitting || altchaState === 'verifying' || altchaState === 'idle'}
         >
           {isSubmitting ? "Sending..." : "Submit"}
         </button>
