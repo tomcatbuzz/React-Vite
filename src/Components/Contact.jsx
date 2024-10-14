@@ -130,7 +130,7 @@ const ContactFormContent = () => {
         //   toast.error('Altcha verification failed, please try again')
         }
         catch {
-          console.error('Error submitting form')
+        console.error('Error submitting form')
         toast.error('Error submitting form, please try again')
         } finally {
           setIsSubmitting(false);

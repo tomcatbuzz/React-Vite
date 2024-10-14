@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react'
-// Importing altcha package will introduce a new element <altcha-widget>
+
 import 'altcha'
 import PropTypes from 'prop-types'
 
@@ -33,7 +33,6 @@ const Altcha = forwardRef(({ onStateChange }, ref) => {
     }
   }, [onStateChange])
 
-  /* Configure your `challengeurl` and remove the `test` attribute, see docs: https://altcha.org/docs/website-integration/#using-altcha-widget  */
   return (
     <altcha-widget
       ref={widgetRef}
